@@ -414,9 +414,14 @@ class SessionDiagnostics:
 
         return breakdown
 
-    def save_results(self):
+    def save_results(self, suffix: str = ""):
         """Save all results to JSON file"""
-        output_file = self.output_dir / f"diagnostic_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        if suffix:
+            filename = f"diagnostic_results_{suffix}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        else:
+            filename = f"diagnostic_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+
+        output_file = self.output_dir / filename
 
         output = {
             "summary": self.generate_summary(),

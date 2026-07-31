@@ -22,9 +22,11 @@ PROMPT_2 = "What magic value did you just tell me?"
 class ClaudeCodeDiagnosticRunner:
     """Runs diagnostics using Claude Code's native messaging"""
 
-    def __init__(self, backend: str):
+    def __init__(self, backend: str, output_dir: Path = None):
         self.backend = backend
-        self.diagnostics = SessionDiagnostics(output_dir=Path("./diagnostic_output"))
+        if output_dir is None:
+            output_dir = Path("./diagnostic_output")
+        self.diagnostics = SessionDiagnostics(output_dir=output_dir)
         self.conversation_log = []
 
     def setup_backend(self):
@@ -129,7 +131,7 @@ class ClaudeCodeDiagnosticRunner:
 
         # Generate summary
         self.diagnostics.print_summary()
-        output_file = self.diagnostics.save_results()
+        output_file = self.diagnostics.save_results(suffix=self.backend)
 
         return output_file
 
